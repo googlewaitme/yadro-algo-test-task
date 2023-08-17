@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.10)
 
 project(task)
 
-file(GLOB SOURCES src/*cpp)
+set(CMAKE_CXX_STANDARD 20)
 
-add_executable(task ${SOURCES})
+
+include_directories(src)
+
+add_subdirectory(src)
+add_subdirectory(tests)
+add_subdirectory(lib/googletest)
+
