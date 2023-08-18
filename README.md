@@ -6,13 +6,14 @@
 mkdir build
 cd build
 cmake ..
-make
+make all
 ```
 
 ### Запуск
 
 ``` bash
-./task test_file.txt
+cd build
+./src/task_run test_file.txt
 ```
 
 ### TODO
