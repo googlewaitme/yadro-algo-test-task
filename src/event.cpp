@@ -1,5 +1,5 @@
 #include <string>
-#include "time.cpp"
+#include "mytime.h"
 
 
 struct Event {
@@ -7,12 +7,12 @@ struct Event {
     std::string client_name;
     Time time;
 
-    friend std::istream& operator>>(std::istream& inp, Event& obj) {
-        inp >> obj.time >> obj.type >> obj.client_name;
+    friend std::istream& operator>>(std::istream& is, Event& obj) {
+        is >> obj.time >> obj.type >> obj.client_name;
         if (obj.type == 2) {
-            inp >> obj.table_number;
+            is >> obj.table_number;
         }
-        return inp;
+        return is;
     }
 
     friend std::ostream& operator<<(std::ostream& os, Event& obj) {

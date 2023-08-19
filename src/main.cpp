@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include "time.cpp"
-#include "event.cpp"
+
+#include "computer_club.h"
 
 
 int main(int argc, char* argv[]) {
@@ -9,21 +9,8 @@ int main(int argc, char* argv[]) {
         // TODO check file is exists
         std::cout << "ERROR need filename" << "\n";
     }
-    /*
-    */
-    std::ifstream fin(argv[1]);
-
-    int count_of_computers;
-    Time start_time, end_time;
-    int cost_per_hour;
-    // TODO check is >= 0
-    fin >> count_of_computers;
-    fin >> start_time >> end_time;
-    fin >> cost_per_hour;
-    Event event;
-    std::cout << "cost_per_hour: " << cost_per_hour << "\n";
-    while (fin >> event) {
-        std::cout << event << "\n";
-    }
+    
+    ComputerClub club(argv[1]);
+    club.event_handling();
 	return 0;
 }
