@@ -11,6 +11,6 @@ int main(int argc, char* argv[]) {
     }
     
     ComputerClub club(argv[1]);
-    club.event_handling();
+    club.run_work_day();
 	return 0;
 }

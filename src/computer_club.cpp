@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 #include "computer_club.h"
 #include "event.h"
@@ -12,10 +13,17 @@ ComputerClub::ComputerClub(std::string filename) : file(filename) {
     m_number_of_occupied_computers = 0;
 }
 
+void ComputerClub::run_work_day() {
+    std::cout << m_start_time << std::endl;
+    event_handling();
+    go_away_last_clients();
+    std::cout << m_end_time << std::endl;
+    make_conclusion(); 
+}
+
 
 void ComputerClub::event_handling() {
     Event event;
-    std::cout << m_start_time << std::endl;
     while (file >> event) {
         std::cout << event << "\n";
         handle(event);
@@ -102,5 +110,29 @@ void ComputerClub::client_left(Event event) {
         }
     }
     m_clients.erase(event.client_name);
+}
+
+
+
+void ComputerClub::go_away_last_clients() {
+    std::vector<std::string> last_clients;
+    while (m_clients_queue.size()) {
+        last_clients.push_back(m_clients_queue.front());
+        m_clients_queue.pop();
+    }
+    for (auto client: m_clients) {
+        if (client.second > 0) {
+            last_clients.push_back(client.first);
+        }
+    }
+    sort(last_clients.begin(), last_clients.end());
+    for (auto name: last_clients) {
+        std::cout << m_end_time << " 11 " << name << std::endl;
+    }
+}
+
+
+void ComputerClub::make_conclusion() {
+    std::cout << "Here must be conclusion\n";
 }
 
