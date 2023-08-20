@@ -11,11 +11,14 @@
 class ComputerClub {
 private:
     int m_cost_per_hour;
-    int m_count_of_tables;
     Time m_start_time, m_end_time;
     std::unordered_map<std::string, int> m_clients;
     std::ifstream file;
-    std::queue<std::string> clients_queue;
+    std::queue<std::string> m_clients_queue;
+
+    int m_count_of_tables;
+    std::vector<bool> m_table_is_busy;
+    int m_number_of_occupied_computers = 0;
 public:
     ComputerClub(std::string filename);
     void event_handling();
