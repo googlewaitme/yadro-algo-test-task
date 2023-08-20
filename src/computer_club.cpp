@@ -10,6 +10,9 @@
 ComputerClub::ComputerClub(std::string filename) : file(filename) {
     file >> m_count_of_tables >> m_start_time >> m_end_time >> m_cost_per_hour;
     m_table_is_busy = std::vector<bool> (m_count_of_tables + 1, false);
+    m_table_started_use = std::vector<Time> (m_count_of_tables + 1);
+    m_table_income = std::vector<int> (m_count_of_tables + 1, 0);
+    m_table_used_time = std::vector<int> (m_count_of_tables + 1, 0);
     m_number_of_occupied_computers = 0;
 }
 
@@ -71,6 +74,7 @@ void ComputerClub::client_sit_at_table(Event event) {
         m_number_of_occupied_computers--;
     }
     m_table_is_busy[event.table_number] = true;
+    m_table_started_use[event.table_number] = event.time;
     m_clients[event.client_name] = event.table_number;
     m_number_of_occupied_computers++;
 }
@@ -100,6 +104,10 @@ void ComputerClub::client_left(Event event) {
     if (m_clients[event.client_name] > 0) {
         int table_id = m_clients[event.client_name];
         m_table_is_busy[table_id] = false;
+        int count_of_minutes_at_table = get_time_delta(m_table_started_use[table_id], event.time);
+        // added +59 for ceil getted_value purpose
+        m_table_income[table_id] += m_cost_per_hour * ((count_of_minutes_at_table + 59) / 60);
+        m_table_used_time[table_id] += count_of_minutes_at_table;
 
         // std::cout << "CHECK_QUEUE_SIZE " << m_clients_queue.size() << "\n";
         if (m_clients_queue.size() > 0) {
@@ -126,13 +134,19 @@ void ComputerClub::go_away_last_clients() {
         }
     }
     sort(last_clients.begin(), last_clients.end());
+    Event client_left_event(m_end_time, 11, "bulat");
     for (auto name: last_clients) {
-        std::cout << m_end_time << " 11 " << name << std::endl;
+        client_left_event.client_name = name;
+        client_left(client_left_event);
+        std::cout << client_left_event << std::endl;
     }
 }
 
 
 void ComputerClub::make_conclusion() {
-    std::cout << "Here must be conclusion\n";
+    for (int i=1; i<=m_count_of_tables; i++) {
+        Time used_time(m_table_used_time[i]);
+        std::cout << i << " " << m_table_income[i] << " " << used_time << "\n";
+    }
 }
 

@@ -19,6 +19,9 @@ private:
     int m_count_of_tables;
     std::vector<bool> m_table_is_busy;
     int m_number_of_occupied_computers = 0;
+    std::vector<Time> m_table_started_use;
+    std::vector<int> m_table_income;
+    std::vector<int> m_table_used_time;
 
     void client_come (Event event);
     void client_sit_at_table(Event event);
