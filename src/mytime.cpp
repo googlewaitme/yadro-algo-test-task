@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include "mytime.h"
 
@@ -21,7 +20,7 @@ std::istream& operator>>(std::istream& input, Time& time) {
 }
 
 std::ostream& operator<<(std::ostream& output, Time& time) {
-    return output << time.hour << ":" << time.min;
+    return output << time.hour/10 << time.hour%10 << ":" << time.min/10 << time.min%10;
 }
 
 
