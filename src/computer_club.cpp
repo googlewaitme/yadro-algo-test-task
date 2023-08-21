@@ -6,6 +6,7 @@
 
 #include "computer_club.h"
 #include "event.h"
+#include "client.h"
 
 
 ComputerClub::ComputerClub(std::string filename) : file(filename) {
@@ -51,6 +52,8 @@ void ComputerClub::client_come (Event event) {
         std::cout << event.time << " 13 YouShallNotPass\n";
         return;
     }
+    // check if name is valid here;
+    Client potencial_client(event.client_name);
     // client in club, but not seating at table;
     m_client_to_table[event.client_name] = -1;
 }
