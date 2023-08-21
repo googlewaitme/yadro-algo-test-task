@@ -67,11 +67,9 @@ void ComputerClub::client_sit_at_table(Event event) {
     }
     int last_table = m_client_to_table[event.client_name];
     if (last_table != -1) {
-        m_tables[last_table].is_busy = false;
-        m_number_of_occupied_computers--;
+        m_tables[last_table].end_of_using(m_cost_per_hour, event.time);
     }
-    m_tables[event.table_number].is_busy = true;
-    m_tables[event.table_number].start_use = event.time;
+    m_tables[event.table_number].start_of_using(event.time);
     m_client_to_table[event.client_name] = event.table_number;
     m_number_of_occupied_computers++;
 }
@@ -100,12 +98,7 @@ void ComputerClub::client_left(Event event) {
     }
     if (m_client_to_table[event.client_name] > 0) {
         int table_id = m_client_to_table[event.client_name];
-        m_tables[table_id].is_busy = false;
-        int count_of_minutes_at_table = get_time_delta(m_tables[table_id].start_use, event.time);
-        // added +59 for ceil getted_value purpose
-        m_tables[table_id].income += m_cost_per_hour * ((count_of_minutes_at_table + 59) / 60);
-        m_tables[table_id].used_time += count_of_minutes_at_table;
-
+        m_tables[table_id].end_of_using(m_cost_per_hour, event.time);
         // std::cout << "CHECK_QUEUE_SIZE " << m_clients_queue.size() << "\n";
         if (m_clients_queue.size() > 0) {
             Event new_seater_in_club(event.time, 12, m_clients_queue.front(), table_id);

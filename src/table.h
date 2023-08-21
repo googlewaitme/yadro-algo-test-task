@@ -8,4 +8,7 @@ struct Table {
     int used_time = 0;
 
     Table();
+
+    void end_of_using(int cost_per_hour, Time end_time);
+    void start_of_using(Time start_time);
 };
