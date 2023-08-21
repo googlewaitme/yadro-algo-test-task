@@ -6,6 +6,7 @@
 
 #include "mytime.h"
 #include "event.h"
+#include "table.h"
 
 
 class ComputerClub {
@@ -16,12 +17,9 @@ private:
     std::ifstream file;
     std::queue<std::string> m_clients_queue;
 
-    int m_count_of_tables;
-    std::vector<bool> m_table_is_busy;
     int m_number_of_occupied_computers = 0;
-    std::vector<Time> m_table_started_use;
-    std::vector<int> m_table_income;
-    std::vector<int> m_table_used_time;
+    int m_count_of_tables;
+    std::vector<Table> m_tables;
 
     void client_come (Event event);
     void client_sit_at_table(Event event);
