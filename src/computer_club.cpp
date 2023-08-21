@@ -10,7 +10,13 @@
 
 
 ComputerClub::ComputerClub(std::string filename) : file(filename) {
+    if (not file.is_open()) {
+        throw std::invalid_argument("file is not opened");
+    }
     file >> m_count_of_tables >> m_start_time >> m_end_time >> m_cost_per_hour;
+    if (file.fail()) {
+        throw std::invalid_argument("file can't read");
+    }
     m_tables = std::vector<Table> (m_count_of_tables+1);
     m_number_of_occupied_computers = 0;
 }
