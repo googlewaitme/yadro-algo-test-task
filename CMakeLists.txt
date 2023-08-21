@@ -11,3 +11,5 @@ add_subdirectory(src)
 add_subdirectory(tests)
 add_subdirectory(lib/googletest)
 
+# for windows
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
