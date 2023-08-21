@@ -13,7 +13,7 @@ class ComputerClub {
 private:
     int m_cost_per_hour;
     Time m_start_time, m_end_time;
-    std::unordered_map<std::string, int> m_clients;
+    std::unordered_map<std::string, int> m_client_to_table;
     std::ifstream file;
     std::queue<std::string> m_clients_queue;
 

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <unordered_map>
 
 #include "computer_club.h"
 #include "event.h"
@@ -46,16 +47,16 @@ void ComputerClub::client_come (Event event) {
         std::cout << event.time << " 13 NotOpenYet\n";
         return;
     }
-    if (m_clients.contains(event.client_name)) {
+    if (m_client_to_table.contains(event.client_name)) {
         std::cout << event.time << " 13 YouShallNotPass\n";
         return;
     }
     // client in club, but not seating at table;
-    m_clients[event.client_name] = -1;
+    m_client_to_table[event.client_name] = -1;
 }
 
 void ComputerClub::client_sit_at_table(Event event) {
-    if (not m_clients.contains(event.client_name)) {
+    if (not m_client_to_table.contains(event.client_name)) {
         std::cout << event.time << " 13 ClientUnknown\n";
         return;
     }
@@ -64,19 +65,19 @@ void ComputerClub::client_sit_at_table(Event event) {
         std::cout << event.time << " 13 PlaceIsBusy\n";
         return;
     }
-    int last_table = m_clients[event.client_name];
+    int last_table = m_client_to_table[event.client_name];
     if (last_table != -1) {
         m_tables[last_table].is_busy = false;
         m_number_of_occupied_computers--;
     }
     m_tables[event.table_number].is_busy = true;
     m_tables[event.table_number].start_use = event.time;
-    m_clients[event.client_name] = event.table_number;
+    m_client_to_table[event.client_name] = event.table_number;
     m_number_of_occupied_computers++;
 }
 
 void ComputerClub::client_is_waiting(Event event) {
-    if (not m_clients.contains(event.client_name)) {
+    if (not m_client_to_table.contains(event.client_name)) {
         std::cout << event.time << " 13 ClientUnknown\n";
         return;
     }
@@ -93,12 +94,12 @@ void ComputerClub::client_is_waiting(Event event) {
 }
 
 void ComputerClub::client_left(Event event) {
-    if (not m_clients.contains(event.client_name)) {
+    if (not m_client_to_table.contains(event.client_name)) {
         std::cout << event.time << " 13 ClientUnknown\n";
         return;
     }
-    if (m_clients[event.client_name] > 0) {
-        int table_id = m_clients[event.client_name];
+    if (m_client_to_table[event.client_name] > 0) {
+        int table_id = m_client_to_table[event.client_name];
         m_tables[table_id].is_busy = false;
         int count_of_minutes_at_table = get_time_delta(m_tables[table_id].start_use, event.time);
         // added +59 for ceil getted_value purpose
@@ -113,7 +114,7 @@ void ComputerClub::client_left(Event event) {
             std::cout << new_seater_in_club << std::endl;
         }
     }
-    m_clients.erase(event.client_name);
+    m_client_to_table.erase(event.client_name);
 }
 
 
@@ -124,7 +125,7 @@ void ComputerClub::go_away_last_clients() {
         last_clients.push_back(m_clients_queue.front());
         m_clients_queue.pop();
     }
-    for (auto client: m_clients) {
+    for (auto client: m_client_to_table) {
         if (client.second > 0) {
             last_clients.push_back(client.first);
         }
