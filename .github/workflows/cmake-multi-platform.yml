@@ -23,26 +23,17 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        build_type: [Release]
-        c_compiler: [gcc, clang, cl]
-        include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++-12
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++-14
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
+          include:
+          - platform_name: linux
+            os: ubuntu-20.04
+            cxx: g++-10
+          - platform_name: macos
+            os: macos-10.15
+            cxx: clang++
+          # NOTE: CXX seems to be ignored on Windows, but specify it anyway for consistency
+          - platform_name: windows
+            os: windows-2019
+            cxx: msvc
 
     steps:
     - uses: actions/checkout@v3
