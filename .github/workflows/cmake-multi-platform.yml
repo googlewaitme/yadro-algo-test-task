@@ -46,7 +46,7 @@ jobs:
 
     steps:
     - name: download gcc13 for ubuntu
-      if: matrix.os == "ubuntu.latest"
+      if: matrix.configurations.os == "ubuntu-latest"
       run:
         sudo apt install gcc-13 g++-13 -y
     - uses: actions/checkout@v3
